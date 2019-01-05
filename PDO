@@ -1,0 +1,27 @@
+<?php
+
+  $opt= [
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+  ];
+  $pdo =  new PDO("mysql:dbname=loggindb;host=localhost;charset=utf8","root","",$opt);
+  
+  //$stmt = $pdo->query("SELECT * FROM users WHERE id =".$_GET['id']);
+  //$stmt = $stmt->fetchAll();
+  $stmt = $pdo->prepare("SELECT * FROM users WHERE id =? OR username=?");
+  $stmt->execute([$_GET["id"],"test"]);
+  
+  
+  $stmt = $pdo->prepare("SELECT * FROM users WHERE id =:id");
+  //$stmt->bindValue(":id", $_GET['id']);
+  //$stmt->execute();
+  $stmt->execute(["id"=>$_GET['id']]);
+  
+
+
+  while ($row= $stmt->fetch()){
+
+    print_r($row);
+  }
+
+ // var_dump($stmt);
+?>
